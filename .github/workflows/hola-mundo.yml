@@ -35,5 +35,17 @@ jobs:
       - name: verificar test con maven 
         run: mvn clean test
 
+  package-app:
+    name: verificar que el job de build-test se halla ejecutado correctamente
+    runs-on: ubuntu-latest
+    needs: build-test
+
+    steps:
+      - name: Verificar si se ha ejecutado correctamente el job de build-test
+        run: echo "El test se ha ejecutado correctamente"
+
+
+  
+
 
           
