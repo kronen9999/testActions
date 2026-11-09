@@ -21,13 +21,13 @@ jobs:
                 cache: 'maven'
 
             - name: Generate JaCoCo report
-              run: ./mvnw clean test
+              run: bash ./mvnw clean test
 
             - name: Run Sonar scanner
               env:
                 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               run: |
-                ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                bash ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
                   -Dsonar.projectKey=testActions \
                   -Dsonar.host.url=https://sonarcloud.io \
                   -Dsonar.organization=kronen9999 \
