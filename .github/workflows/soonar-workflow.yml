@@ -1,4 +1,4 @@
-name: Sonnar Worlkflow
+name: Sonar Workflow
 
 on:
     push:
@@ -6,37 +6,30 @@ on:
             - main
 
 jobs:
-    build:
-        name: Build and comfigure virtual environment
+    SonarRun:
+        name: Run SonarCloud analysis
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
               uses: actions/checkout@v5
 
-            - name: Set up java
+            - name: Set up Java
               uses: actions/setup-java@v5
               with:
                 distribution: 'temurin'
                 java-version: '17'
                 cache: 'maven'
-            
-            - name: Generar reporte jacoco
-              run: mvn clean test
 
-    
-    SonarRun:
-        name: Run SonarQube analysis
-        runs-on: ubuntu-latest
-        needs: build
-        env:
-            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        steps:
-            - name : run sonar scanner
+            - name: Generate JaCoCo report
+              run: ./mvnw clean test
+
+            - name: Run Sonar scanner
+              env:
+                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
               run: |
-                mvn sonar:sonar \
-                -Dsonar.projectKey=testActions \
-                -Dsonar.host.url=https://sonarcloud.io \
-                -Dsonar.organization=kronen9999 \
-                -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-           
-              
+                ./mvnw org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                  -Dsonar.projectKey=testActions \
+                  -Dsonar.host.url=https://sonarcloud.io \
+                  -Dsonar.organization=kronen9999 \
+                  -Dsonar.token="$SONAR_TOKEN" \
+                  -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
