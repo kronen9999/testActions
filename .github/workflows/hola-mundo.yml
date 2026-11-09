@@ -1,0 +1,15 @@
+name:Hola Mundo Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run Hola Mundo script
+        run: echo "Hola Mundo"
