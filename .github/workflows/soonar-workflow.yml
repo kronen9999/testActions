@@ -1,0 +1,42 @@
+name: Sonnar Worlkflow
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        name: Build and comfigure virtual environment
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v5
+
+            - name: Set up java
+              uses: actions/setup-java@v5
+              with:
+                distribution: 'temurin'
+                java-version: '17'
+                cache: 'maven'
+            
+            - name: Generar reporte jacoco
+              run: mvn clean test
+
+    
+    SonarRun:
+        name: Run SonarQube analysis
+        runs-on: ubuntu-latest
+        needs: build
+        env:
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        steps:
+            - name : run sonar scanner
+              run: |
+                mvn sonar:sonar \
+                -Dsonar.projectKey=testActions \
+                -Dsonar.host.url=https://sonarcloud.io \
+                -Dsonar.organization=kronen9999 \
+                -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+           
+              
