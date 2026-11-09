@@ -4,12 +4,36 @@ on:
   push:
     branches:
       - main
+  pull_request: 
+      branches: 
+        -main
 
 jobs:
-
   build:
+    name: hola mundo sencillo
     runs-on: ubuntu-latest
 
     steps:
       - name: Run Hola Mundo script
         run: echo "Hola Mundo"
+
+  build-test:
+    name: probar y testear repo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: copiar repositorio 
+        uses: actions/checkout@v4
+
+      - name: instalar java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: verificar test con maven 
+        run: mvn clean test
+
+
+          
