@@ -13,4 +13,15 @@ public class CodeSmellExample {
 
         return "This message is duplicated";
     }
+
+    public void unusedVariableExample() {
+        String unusedMessage = "This variable is never used";
+    }
+
+    public void emptyCatchExample() {
+        try {
+            throw new IllegalArgumentException("Test exception");
+        } catch (IllegalArgumentException exception) {
+        }
+    }
 }
